@@ -1,39 +1,41 @@
-import json
-
-import requests, pickle
+import requests
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.core.os_manager import ChromeType
-from selenium.webdriver.chrome.service import Service as ChromiumService
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-
-options = webdriver.ChromeOptions()
-
-chrome_prefs = {
-    "download.prompt_for_download": False,
-    "plugins.always_open_pdf_externally": True,
-    "download.open_pdf_in_system_reader": False,
-    "profile.default_content_settings.popups": 0,
-    "download.default_directory" : "./downloads",
-}
-options.add_experimental_option("prefs", chrome_prefs)
-options.add_argument('--headless')
-options.add_argument('--no-sandbox')
-
-base_url = 'https://megamarket.ru/api/mobile/v1/catalogService/catalog/search'
+base_url = 'https://www.balttara.ru'
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 
-notebooks = 'https://megamarket.ru/catalog/noutbuki/'
+
+
+def get_categories(url):
+    categories = []
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        response.encoding = 'utf-8'
+        soup = BeautifulSoup(response.text, 'lxml')
+        div = soup.find('div', class_='view-content')
+        cats = div.find_all('div', class_='field-content')
+        cats = [base_url + cat.find('a')['href'] for cat in cats]
+        return cats
+    else:
+        print(f'Request error: {response.status_code}')
 
 
 def get_products(url):
-    with webdriver.Chrome(options=options, service=ChromiumService(ChromeDriverManager().install())) as browser:
-        browser.get(url)
-    element = browser.find_element(By.CLASS_NAME, 'catalog-items-list')
-    return element
+    products = []
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        response.encoding = 'utf-8'
+        soup = BeautifulSoup(response.text, 'lxml')
+        div = soup.find('div', class_='view-content')
+        products = div.find_all('h2', class_='node-title')
+        products = [base_url + product.find('a')['href'] for product in products]
+        return products
+    else:
+        print(f'Request error: {response.status_code}')
 
-products = get_products(notebooks)
-print(products)
+count = 1
+cats = get_categories(base_url)
+for cat in cats:
+    products = get_products(cat)
+    for product in products:
+        print(f'{count}. {product}')
+        count += 1
