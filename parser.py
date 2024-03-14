@@ -25,9 +25,10 @@ def get_products(url):
     if response.status_code == 200:
         response.encoding = 'utf-8'
         soup = BeautifulSoup(response.text, 'lxml')
-        div = soup.find('div', class_='view-content')
-        products = div.find_all('h2', class_='node-title')
-        products = [base_url + product.find('a')['href'] for product in products]
+        # div = soup.find('div', class_='view-content')
+        products = soup.find_all('h2', class_='node-title')
+        # products = [base_url + product.find('a')['href'] for product in products]
+        products = [product.find('a').text for product in products]
         return products
     else:
         print(f'Request error: {response.status_code}')
