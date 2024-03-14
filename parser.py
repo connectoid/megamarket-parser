@@ -33,6 +33,13 @@ def get_products(url):
     else:
         print(f'Request error: {response.status_code}')
 
+
+def save_list_to_file(lst):
+    with open(r'products_list.txt', 'w') as f:
+        for item in lst:
+            f.write("%s\n" % item)
+
+
 count = 1
 cats = get_categories(base_url)
 for cat in cats:
@@ -40,3 +47,4 @@ for cat in cats:
     for product in products:
         print(f'{count}. {product}')
         count += 1
+    save_list_to_file(products)
