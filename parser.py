@@ -44,7 +44,6 @@ def get_subcategories(url):
             # products = [get_short_data(product.find('a', class_='tovar_link')) for product in products]
             tmp_products = []
             for product in products:
-                print('===========>', product)
                 short_data = get_short_data(product.find('a', class_='tovar_link'))
                 tmp_products.append(short_data)
             group_products.append(tmp_products)
@@ -98,8 +97,6 @@ count = 1
 products_list = []
 cats = get_categories(url)
 for cat in cats:
-
-    # subcats, group_products = get_subcategories(cat[1])
     subcats, group_products = get_subcategories(silos_url)
     for group_product in group_products:
         for product in group_product:
