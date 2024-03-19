@@ -4,7 +4,7 @@ url = 'https://dozaagro.com/oborudovanie'
 base_url = 'https://dozaagro.com'
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 
-
+silos_url = 'https://dozaagro.com/oborudovanie/silosy-konusnye/'
 
 def get_categories(url):
     categories = []
@@ -35,7 +35,10 @@ def get_subcategories(url):
         for group in product_groups:
             count = 1
             products = group.find_all('tr')
-            products = products[1:]
+            products = [product for product in products if product.find('td')]
+
+            # print(len(products))
+            # products = products[1:]
             products = [product.find('td', class_='td_name s_td_name s_td_mob_show') for product in products]
             # products = [base_url + product.find('a', class_='tovar_link')['href'] for product in products]
             # products = [get_short_data(product.find('a', class_='tovar_link')) for product in products]
@@ -95,12 +98,14 @@ count = 1
 products_list = []
 cats = get_categories(url)
 for cat in cats:
-    subcats, group_products = get_subcategories(cat[1])
+
+    # subcats, group_products = get_subcategories(cat[1])
+    subcats, group_products = get_subcategories(silos_url)
     for group_product in group_products:
         for product in group_product:
             print(f'{count}. {cat[0]} - {product}')
             products_list.append(f'{count}. {cat[0]} - {product}')
             count += 1
-    # break
+    break
 save_list_to_file(products_list)
     
