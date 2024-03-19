@@ -46,12 +46,21 @@ def get_subcategories(url):
 
 
 def get_short_data(element):
-    category = element.find('div', class_='e_offer_info_for_pc').text
-    model = element.find('strong', class_='offer_model').text
-    info = element.find('div', class_='e_offer_info_for_mobile')
-    info = info.find_all('div')
-    info = [field.text for field in info]
-    info = ' '.join(info)
+    try:
+        category = element.find('div', class_='e_offer_info_for_pc').text
+    except:
+        category = ('NO CATEGORY')
+    try:
+        model = element.find('strong', class_='offer_model').text
+    except:
+        model = ('NO MODEL')
+    try:
+        info = element.find('div', class_='e_offer_info_for_mobile')
+        info = info.find_all('div')
+        info = [field.text for field in info]
+        info = ' '.join(info)
+    except:
+        info = 'NO INFO'
     short_data = f'{category} {model} {info}'
     return short_data
 
