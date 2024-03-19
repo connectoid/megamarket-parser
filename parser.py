@@ -103,6 +103,5 @@ for cat in cats:
             print(f'{count}. {cat[0]} - {product}')
             products_list.append(f'{count}. {cat[0]} - {product}')
             count += 1
-    break
 save_list_to_file(products_list)
     
