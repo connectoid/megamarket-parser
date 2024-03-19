@@ -42,7 +42,8 @@ def get_subcategories(url):
                 products = [get_short_data(product.find('a', class_='tovar_link')) for product in products]
             except:
                 product = []
-            group_products.append(products)
+            if products:
+                group_products.append(products)
         return subcats, group_products
     else:
         print(f'Request error: {response.status_code}')
