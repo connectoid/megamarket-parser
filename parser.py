@@ -38,7 +38,10 @@ def get_subcategories(url):
             products = products[1:]
             products = [product.find('td', class_='td_name s_td_name s_td_mob_show') for product in products]
             # products = [base_url + product.find('a', class_='tovar_link')['href'] for product in products]
-            products = [get_short_data(product.find('a', class_='tovar_link')) for product in products]
+            try:
+                products = [get_short_data(product.find('a', class_='tovar_link')) for product in products]
+            except:
+                product = []
             group_products.append(products)
         return subcats, group_products
     else:
