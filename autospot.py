@@ -74,4 +74,4 @@ for brand in brands:
             car = ', '.join(car)
             print(f'{count}. {car}')
             count += 1
-    break
+    # break
