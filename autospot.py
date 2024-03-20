@@ -58,12 +58,13 @@ def get_cars(url):
 
 
 def save_list_to_file(lst):
-    with open(r'products_list.txt', 'w') as f:
+    with open(r'cars_list.txt', 'w') as f:
         for item in lst:
             f.write("%s\n" % item)
 
 
 count = 1
+cars = []
 brands = get_brands(base_url)
 for brand in brands:
     car_links = get_car_links(brand)
@@ -73,5 +74,8 @@ for brand in brands:
         for car in cars:
             car = ', '.join(car)
             print(f'{count}. {car}')
+            cars.append(f'{count}. {car}')
             count += 1
-    # break
+    if count == 1000:
+        break
+save_list_to_file(cars)
