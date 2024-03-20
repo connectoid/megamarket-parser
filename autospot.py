@@ -43,7 +43,10 @@ def get_cars(url):
     if response.status_code == 200:
         response.encoding = 'utf-8'
         soup = BeautifulSoup(response.text, 'lxml')
-        car_name = soup.find('h1', class_='auto-section__title').text
+        try:
+            car_name = soup.find('h1', class_='auto-section__title').text
+        except:
+            car_name = 'No title'
         div = soup.find('div', class_='spec-list__inner-container')
         links = div.find_all('a', class_='price-car-card')
         links = [link['href'] for link in links]
