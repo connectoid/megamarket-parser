@@ -74,6 +74,7 @@ for brand in brands:
     for car_link in car_links:
         car_name, cars = get_cars(car_link)
         print(car_name)
+        cars_list.append(car_name)
         for car in cars:
             car = ', '.join(car)
             print(f'{count}. {car}')
